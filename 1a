@@ -1,0 +1,28 @@
+Program:
+PRESERVE8 ; Used to specify 8-byte alignment of stack
+Stack EQU 0x00000100 ;Define stack size
+AREA STACK, NOINIT, READWRITE,ALIGN=3 ; AREA directive is used to define a code or
+;data segment in arm assembly program
+StackMem SPACE Stack ; STACK directive is used to define stack segment
+; SPACE directive is used to define
+;specify that from label "StackMem" to next 256 byte have to be 0 initialized
+
+AREA RESET, DATA , READONLY ; This is a data segment which defines vector
+;table which points to different interrupt handlers
+EXPORT Vectors ; Export is used to specify that the block of code
+
+;following the label is global label
+
+Vectors
+DCD StackMem + Stack ; Starts with address of stack pointer
+DCD Reset_Handler
+
+AREA tempData, DATA, READONLY, ALIGN=4
+ROMARRAY1 DCD 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08
+; Initializing Array1 in the ROM
+ROMARRAY2 DCD 0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16
+; Initializing Array2 in the ROM
+
+AREA |.data|, DATA, READWRITE, ALIGN=4
+LEN EQU 0x08 ; Length of Array,8 words
+ARRAY1 SPACE 32
